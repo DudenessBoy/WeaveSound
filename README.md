@@ -2,3 +2,5 @@ WeaveSound is a lightweight music player designed with simplicity and efficiency
 user-friendly interface, making it ideal for users who want quick access to their music without unnecessary distractions.
 Focused on delivering a streamlined listening experience, WeaveSound prioritizes essential features, ensuring smooth
 performance even on systems with limited resources.
+
+The program has only been thoroughly tested on Linux. Windows and Mac testing, as well as installers are coming soon.

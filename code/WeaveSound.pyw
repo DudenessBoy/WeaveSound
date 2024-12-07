@@ -568,7 +568,6 @@ def settings() -> None:
     frame5 = ttk.Frame(notebook, width = 400, height = 280)
     frame9 = ttk.Frame(notebook, width = 400, height = 280)
     frame6 = ttk.Frame(notebook, width = 400, height = 280)
-    frame7 = ttk.Frame(notebook, width = 400, height = 280)
     frame8 = ttk.Frame(notebook, width = 400, height = 280)
     frame10 = ttk.Frame(notebook, width = 400, height = 280)
 
@@ -578,7 +577,6 @@ def settings() -> None:
     frame5.pack(fill = 'both', expand = True)
     frame9.pack(fill = 'both', expand = True)
     frame6.pack(fill = 'both', expand = True)
-    frame7.pack(fill = 'both', expand = True)
     frame8.pack(fill = 'both', expand = True)
     frame10.pack(fill = 'both', expand = True)
 

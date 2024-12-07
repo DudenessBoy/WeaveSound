@@ -4,3 +4,5 @@ Focused on delivering a streamlined listening experience, WeaveSound prioritizes
 performance even on systems with limited resources.
 
 While not required, it is recommended that you install [ffmpeg](https://ffmpeg.org), as some functionality does rely on this. The program has not been tested on MacOS.
+
+When running from source code, [PyGame](https://pypi.org/project/pygame) is requried, however it is compiled with the executable.

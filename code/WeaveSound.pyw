@@ -17,7 +17,7 @@ import os
 import sys
 import zlib
 import time
-import lang
+import lang as lang_
 import random
 import pickle
 import webbrowser
@@ -589,7 +589,6 @@ def settings() -> None:
     notebook.add(frame5, text = lang['tab']['queue'])
     notebook.add(frame9, text = lang['tab']['playlist'])
     notebook.add(frame6, text = lang['tab']['play_all'])
-    notebook.add(frame7, text = lang['tab']['language'])
     notebook.add(frame8, text = lang['tab']['theme'])
     notebook.add(frame10, text = lang['tab']['track_length'])
 
@@ -1314,7 +1313,7 @@ def playlist() -> None:
                     messagebox.showerror(lang['title']['error'], lang['popup']['error_write'].format(os.path.join(path, f)))
 
         print('Done. Building queue...')
-        queue = Queue(queueList, 'English')
+        queue = Queue(queueList)
         queue.filename = str(dataFolder/'WeaveSound'/'queues'/(os.path.splitext(filename[1])[0] + '.queue'))
         queue.name = plylst['title']
         queue.save()
@@ -1432,11 +1431,10 @@ def seek(position: int) -> None:
 
 # an object representing the queue
 class Queue:
-    def __init__(self, queue: list, language: str | None = None):
+    def __init__(self, queue: list):
         self.queue = queue
         self.saved = False
-        self.language = language
-        self.name = lang[data.lang if language is None else language]['label']['untitled']
+        self.name = lang['label']['untitled']
         self.filename = None
 
     # save the queue
@@ -1738,7 +1736,7 @@ class Queue:
 
 # an object for save data
 class SaveData:
-    def __init__(self, directories: list, loops: int, volup: str, voldown: str, pause: str, mute: str, queue: Queue, saveQueue: int, loopQueue: int, lastDir: Path, loopAll: int, lang: str, directory, theme: int, loopPlaylist: int, startNext: int, wrap: int, getLen: int, playlist: int) -> None:
+    def __init__(self, directories: list, loops: int, volup: str, voldown: str, pause: str, mute: str, queue: Queue, saveQueue: int, loopQueue: int, lastDir: Path, loopAll: int, directory, theme: int, loopPlaylist: int, startNext: int, wrap: int, getLen: int, playlist: int) -> None:
         self.loops = loops
         self.volup = volup
         self.voldown = voldown
@@ -1749,7 +1747,6 @@ class SaveData:
         self.loopQueue = loopQueue
         self.lastDir = lastDir
         self.loopAll = loopAll
-        self.lang = lang
         self.theme = theme
         self.loopPlaylist = loopPlaylist
         self.startNext = startNext
@@ -1862,7 +1859,7 @@ class Hyperlink(tk.Label):
 os.makedirs(os.path.join(str(dataFolder), 'WeaveSound', 'queues'), exist_ok = True)# make the data folders if they don't exist
 
 # check to make sure lang file is valid
-lang = lang.check()
+lang = lang_.check()
 if not lang:
     exit()
 
@@ -1873,12 +1870,12 @@ try:
     if not isinstance(data, SaveData):
         raise TypeError
 except FileNotFoundError:
-    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([], 'English'), 1, 1, 1, 1, 'English', str(musicDir), 0, 1, 0, 0, 1, 0)
+    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([]), 1, 1, 1, 1, str(musicDir), 0, 1, 0, 0, 1, 0)
     print('Created new data file')
     data.save()
 except (pickle.PickleError, TypeError, EOFError, AttributeError, MemoryError) as e:
     messagebox.showinfo('Error Loading File', f'An error occured loading your save data from the file\n"{os.path.join(str(dataFolder), "WeaveSound", "data.pickle")}"\n{e}\nBecause of this, your data has been reset.')
-    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([], 'English'), 1, 1, 1, 1, 'English', str(musicDir), 0, 1, 0, 0, 1, 0)
+    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([]), 1, 1, 1, 1, str(musicDir), 0, 1, 0, 0, 1, 0)
     print('Recreated corrupted data file')
     data.save()
 
@@ -1910,9 +1907,6 @@ if not hasattr(data, 'loopQueue'):
 if not hasattr(data, 'lastDir'):
     data.lastDir = musicDir
     print(f'Added property "lastDir" with string value of "{musicDir}" to data')
-if not hasattr(data, 'lang'):
-    data.lang = 'English'
-    print('Added property "lang" with string value of "English" to data')
 if not hasattr(data, 'directories'):
     data.directories = []
     print('Added property "directories" with empty list to data')

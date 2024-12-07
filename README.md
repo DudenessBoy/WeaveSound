@@ -3,4 +3,4 @@ user-friendly interface, making it ideal for users who want quick access to thei
 Focused on delivering a streamlined listening experience, WeaveSound prioritizes essential features, ensuring smooth
 performance even on systems with limited resources.
 
-The program has only been thoroughly tested on Linux. Windows and Mac testing, as well as installers are coming soon.
+While not required, it is recommended that you install [ffmpeg](https://ffmpeg.org), as some functionality does rely on this. The program has not been tested on MacOS.

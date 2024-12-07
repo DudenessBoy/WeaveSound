@@ -353,14 +353,14 @@ def check() -> dict:
         for i in lang_value:
             if i not in loaded[lang_key]:
                 if lang_key not in lang:
-                    loaded[lang_key][i] = lang['English'].get(i, '')
+                    loaded[lang_key][i] = lang.get(i, '')
                 else:
                     loaded[lang_key][i] = lang_value[i]
             elif isinstance(lang_value[i], dict):
                 for j in lang_value[i]:
                     if j not in loaded[lang_key][i]:
                         if lang_key not in lang:
-                            loaded[lang_key][i][j] = lang['English'][i].get(j, '')
+                            loaded[lang_key][i][j] = lang[i].get(j, '')
                         else:
                             loaded[lang_key][i][j] = lang_value[i][j]
 

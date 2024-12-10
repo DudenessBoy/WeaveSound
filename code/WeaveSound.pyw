@@ -1973,7 +1973,7 @@ print('Initializing GUI displays...')
 # selection window
 root = tk.Tk()# root window
 style = ttk.Style()
-setTheme(data.theme, False)
+setTheme(data.theme, False) 
 root.config(bg = 'white' if data.theme else '#1e1e2e')
 root.title(f'{lang["title"]["selection"]} - {lang["title"]["main"]}')
 root.geometry(calculateWindowPosition(100, 50))

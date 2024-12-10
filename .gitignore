@@ -1,4 +1,4 @@
-build/
-dist/
-__pycache__/
-WeaveSound.spec
+code/build/
+code/dist/
+code/__pycache__/
+code/WeaveSound.spec

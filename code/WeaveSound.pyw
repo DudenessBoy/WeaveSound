@@ -17,21 +17,21 @@ import os
 import sys
 import zlib
 import time
-import lang as lang_
 import random
 import pickle
 import webbrowser
+import lang as lang_
 import tkinter as tk
 from glob import glob
-from LicenseText import LICENSE
 from io import BytesIO
 from pygame import error
 from pathlib import Path
 from platform import system
 from base64 import b64decode
 from threading import Thread
-from pydub import AudioSegment
 from tooltip import Hovertip
+from pydub import AudioSegment
+from LicenseText import LICENSE
 from pygame.mixer import init, music
 from tkinter import ttk, filedialog, messagebox
 
@@ -291,8 +291,9 @@ def tryLoad(file: os.PathLike | BytesIO, n: str | None = None) -> bool:
         else: name.config(text = os.path.splitext(n)[0] if len(os.path.splitext(n)[0]) <= 26 else os.path.splitext(n)[0][0:25] + '…')
         if not playingQueue[0]:
             music.play(0)
-            root.withdraw()
-            control.deiconify()
+            if root.state() != 'withdrawn':
+                root.withdraw()
+                control.deiconify()
             mess.config(text = '')
         else:
             if playingQueue[1] == 'queue':
@@ -1017,13 +1018,13 @@ def license() -> None:
 
     # Hyperlinks
     Hyperlink(
-        linkFrame, text='GNU GPL License (Main program)',
+        linkFrame, text='GNU GPL License V3 (Main program)',
         url='https://www.gnu.org/licenses/gpl-3.0.en.html', cursor='hand2',
         bg='white' if data.theme else '#1e1e2e'
     ).pack()
 
     Hyperlink(
-        linkFrame, text='GNU LGPL License (PyGame library)',
+        linkFrame, text='GNU LGPL License V2.1 (PyGame library)',
         url='https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html', cursor='hand2',
         bg='white' if data.theme else '#1e1e2e'
     ).pack()
@@ -1031,14 +1032,37 @@ def license() -> None:
 # show the credits in a window
 def credits() -> None:
     print('Displaying credits window...')
-    creditWin = tk.Toplevel(root, takefocus = True)
-    creditWin.config(bg = 'white' if data.theme else '#1e1e2e')
+    creditWin = tk.Toplevel(root, takefocus=True)
+    creditWin.config(bg='white' if data.theme else '#1e1e2e')
     creditWin.title(f'{lang["title"]["credits"]} - {lang["title"]["main"]}')
     creditWin.focus()
-    creditWin.geometry(f'800x550+{root.winfo_x()}+{root.winfo_y()}')
-    credit = ttk.Label(creditWin, text = 'Authored by:\n• Luke Moyer\n\nSpecial thanks to:\n• PyGame Development Team\n• PyInstaller Development Team\n• Python Software Foundation',
-    justify = 'left')
-    credit.pack() 
+    creditWin.geometry(f'400x400+{root.winfo_x()}+{root.winfo_y()}')
+
+    # Center container frame
+    frame = ttk.Frame(creditWin)
+    frame.grid(row=0, column=0, padx=20, pady=20)
+    
+    bg_color = 'white' if data.theme else '#1e1e2e'
+
+    # Author section
+    author = ttk.Label(frame, text='Authored by:', justify='center', background=bg_color)
+    author.grid(row=0, column=0, sticky='w', pady=5)
+    Hyperlink(frame, text='• Luke Moyer', url='https://github.com/DudenessBoy', bg=bg_color,
+              justify='left', cursor='hand2').grid(row=1, column=0, sticky='w', padx=20)
+
+    # Thanks section
+    thanks = ttk.Label(frame, text='Special thanks to:', justify='center', background=bg_color)
+    thanks.grid(row=2, column=0, sticky='w', pady=15)
+    contributors = [
+        ('• Jordan Russel Software', 'https://jrsoftware.org'),
+        ('• PyGame', 'https://www.pygame.org'),
+        ('• PyInstaller', 'https://pyinstaller.org'),
+        ('• Python Software Foundation', 'https://www.python.org'),
+        ('• Free Software Foundation', 'https://www.fsf.org')
+    ]
+
+    for idx, (name, url) in enumerate(contributors):
+        Hyperlink(frame, text=name, url=url, bg=bg_color, justify='left', cursor='hand2').grid(row=3 + idx, column=0, sticky='w', padx=20)
 
 # show info about the program
 def about() -> None:

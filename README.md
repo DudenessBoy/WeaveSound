@@ -54,7 +54,7 @@ If you plan to run WeaveSound from the source code, you will need to install the
      - For **Arch Linux**:
          ```bash
          sudo pacman -S python
-     - For other Linux distributions, you can search for Python in your package manager. Alternatively, you can check your distribution’s documentation for installation instructions specific to FFmpeg.
+     - For other Linux distributions, you can search for Python in your package manager. Alternatively, you can check your distribution’s documentation for installation instructions specific to Python.
    - For Windows
      - Installing from **Winget**:
          ```bash

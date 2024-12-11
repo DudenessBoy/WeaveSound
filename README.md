@@ -44,7 +44,7 @@ If you plan to run WeaveSound from the source code, you will need to install the
    ```bash
    pip install pygame
 2. **Python** 3.8 or above
-   - For Linux:
+   - For Linux (note: most Linux distributions come with Python preinstalled):
      - For **Debian-based distributions** (e.g., Ubuntu):
        ```bash
        sudo apt install python3
@@ -54,7 +54,7 @@ If you plan to run WeaveSound from the source code, you will need to install the
      - For **Arch Linux**:
          ```bash
          sudo pacman -S python
-     - For other Linux distributions, you can search for FFmpeg in your package manager. Alternatively, you can check your distribution’s documentation for installation instructions specific to FFmpeg.
+     - For other Linux distributions, you can search for Python in your package manager. Alternatively, you can check your distribution’s documentation for installation instructions specific to FFmpeg.
    - For Windows
      - Installing from **Winget**:
          ```bash

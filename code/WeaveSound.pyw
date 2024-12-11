@@ -1451,6 +1451,14 @@ def trackEndEvent() -> None:
 def seek(position: int) -> None:
     music.set_pos(position)
 
+# close the window
+def onClose() -> None:
+    if box.current() >= 0:
+        data.index = box.current()
+    else:
+        data.index = 0
+    root.destroy()
+
 # an object representing the queue
 class Queue:
     def __init__(self, queue: list):
@@ -1758,7 +1766,7 @@ class Queue:
 
 # an object for save data
 class SaveData:
-    def __init__(self, directories: list, loops: int, volup: str, voldown: str, pause: str, mute: str, queue: Queue, saveQueue: int, loopQueue: int, lastDir: Path, loopAll: int, directory, theme: int, loopPlaylist: int, startNext: int, wrap: int, getLen: int, playlist: int) -> None:
+    def __init__(self, directories: list, loops: int, volup: str, voldown: str, pause: str, mute: str, queue: Queue, saveQueue: int, loopQueue: int, lastDir: Path, loopAll: int, directory, theme: int, loopPlaylist: int, startNext: int, wrap: int, getLen: int, playlist: int, index: int) -> None:
         self.loops = loops
         self.volup = volup
         self.voldown = voldown
@@ -1775,6 +1783,7 @@ class SaveData:
         self.wrap = wrap
         self.getLen = getLen
         self.playlist = playlist
+        self.index = index
         for i in directories:
             if not os.path.exists(i):
                 directories.remove(i)
@@ -1892,12 +1901,12 @@ try:
     if not isinstance(data, SaveData):
         raise TypeError
 except FileNotFoundError:
-    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([]), 1, 1, 1, 1, str(musicDir), 0, 1, 0, 0, 1, 0)
+    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([]), 1, 1, 1, 1, str(musicDir), 0, 1, 0, 0, 1, 0, 0)
     print('Created new data file')
     data.save()
 except (pickle.PickleError, TypeError, EOFError, AttributeError, MemoryError) as e:
     messagebox.showinfo('Error Loading File', f'An error occured loading your save data from the file\n"{os.path.join(str(dataFolder), "WeaveSound", "data.pickle")}"\n{e}\nBecause of this, your data has been reset.')
-    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([]), 1, 1, 1, 1, str(musicDir), 0, 1, 0, 0, 1, 0)
+    data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([]), 1, 1, 1, 1, str(musicDir), 0, 1, 0, 0, 1, 0, 0)
     print('Recreated corrupted data file')
     data.save()
 
@@ -1958,6 +1967,9 @@ if not hasattr(data, 'getLen'):
 if not hasattr(data, 'playlist'):
     data.playlist = 0
     print('Added property "playlist" with integer value of "1" to data')
+if not hasattr(data, 'index'):
+    data.index = 0
+    print('Added property "index" with integer value of "0" to data')
 
 # dictionary for filters, not used unless filters are applied
 filterDict = {'types': {'midi': 1, 'wav': 1, 'ogg': 1, 'flac': 1, 'opus': 1, 'aiff': 1, 'mp3': 1, 'mid': 1, 'aif': 1, 'mod': 1, 'xm': 1}, 'contains': '', 'nocontains': '', 'begins': '', 'nobegins': '', 'ends': '', 'noends': '', 'inqueue': 0, 'folder': {'include': data.directories, 'exclude': []}}# filters
@@ -1987,7 +1999,7 @@ choose.pack()
 box = ttk.Combobox(root, width = 45)
 box['values'] = sorted(tuple(shortened)) if len(files) > 0 else tuple(' ')
 box.pack()
-box.current(shortened.index(played) if played in shortened else 0)
+box.current(data.index)
 rand = ttk.Button(root, text = lang['button']['random'], command = lambda: [box.delete(0, 'end'), box.insert(0, random.choice(box['values']))], cursor = 'hand2')
 rand.pack()
 Hovertip(rand, lang['tooltip']['random'])
@@ -2052,6 +2064,7 @@ root.bind(f'<{Control}-Alt-KeyPress-p>', lambda event: playAllBtn.invoke())
 root.bind(f'<Alt-p>', lambda event: playQueue.invoke())
 root.bind(f'<{Control}-a>', lambda event: addQueue.invoke())
 root.bind('<Button-3>', rootContextMenu)
+root.protocol('WM_DELETE_WINDOW', onClose)
 
 # control window
 control = tk.Toplevel(root, takefocus = False)
@@ -2107,7 +2120,7 @@ control.bind('<Button-3>', controlContextMenu)
 control.bind('<Key>', onPress)# other keys
 
 control.withdraw()
-control.protocol('WM_DELETE_WINDOW', root.destroy)
+control.protocol('WM_DELETE_WINDOW', onClose)
 print('Finished')
 
 # a thread that allows the program to continually run the update function

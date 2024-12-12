@@ -2095,7 +2095,7 @@ label.pack()
 # seekbar = ttk.Scale(control, orient = 'horizontal', from_ = 0, to = 1000)
 # seekbar.pack()
 
-prev = ttk.Button(control, text = lang['button']['prev_track'], cursor = 'hand2', width = 5, command = prevTrack)
+prev = ttk.Button(control, text = lang['button']['prev_track'], cursor = 'hand2', width = 6, command = prevTrack)
 # prev.place(x = 13 - shift, y = 120 + shift)
 if OS == 'Linux':
     prev.pack(side = tk.TOP, anchor = tk.W)

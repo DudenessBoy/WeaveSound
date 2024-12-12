@@ -52,13 +52,12 @@ match OS:
         size = 160
         shift = 10
         spacing = 0
-        width = 6
+        width = 10
     case 'Darwin':# macOS
         lightTheme = 'alt'
         dataFolder = Path.home() / 'Library/caches'
         musicDir = Path.home() / 'Music/Music/Media'
         x = 215
-
         length = 26
         Control = 'Command'
         ctrl = 'cmd'
@@ -71,7 +70,6 @@ match OS:
         dataFolder = Path.home() / '.config'
         musicDir = Path.home() / 'Music'
         x = 293
-
         length  = 15
         Control = 'Control'
         ctrl = 'ctrl'
@@ -2093,12 +2091,16 @@ mutebtn.pack()# mute/unmute button
 mutetip = EditableHovertip(mutebtn, f'{lang["tooltip"]["mute"]} ({data.mute.lower()})')
 label = ttk.Label(control, text = '00:00:00')
 label.pack()
+# seekbar, not yet finished
 # seekbar = ttk.Scale(control, orient = 'horizontal', from_ = 0, to = 1000)
 # seekbar.pack()
 
 prev = ttk.Button(control, text = lang['button']['prev_track'], cursor = 'hand2', width = 5, command = prevTrack)
 # prev.place(x = 13 - shift, y = 120 + shift)
-prev.pack(side = tk.TOP, anchor = tk.W)
+if OS == 'Linux':
+    prev.pack(side = tk.TOP, anchor = tk.W)
+else:
+    prev.place(x = 13 - (shift + 2), y = 120 + (shift + 5))
 Hovertip(prev, lang['tooltip']['prev_track'])
 next = ttk.Button(control, text = lang['button']['next_track'], cursor = 'hand2', width = 5, command = nextTrack)
 next.place(x = 110 + (shift - 1), y = 125 + shift)

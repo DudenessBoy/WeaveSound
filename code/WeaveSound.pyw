@@ -2035,7 +2035,10 @@ choose.pack()
 box = ttk.Combobox(root, width = 45)
 box['values'] = sorted(tuple(shortened)) if len(files) > 0 else tuple(' ')
 box.pack()
-box.current(data.index)
+try:
+    box.current(data.index)
+except IndexError:
+    box.current(0)
 rand = ttk.Button(root, text = lang['button']['random'], command = lambda: [box.delete(0, 'end'), box.insert(0, random.choice(box['values']))], cursor = 'hand2')
 rand.pack()
 Hovertip(rand, lang['tooltip']['random'])

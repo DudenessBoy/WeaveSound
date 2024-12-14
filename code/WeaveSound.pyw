@@ -17,6 +17,7 @@ import os
 import sys
 import zlib
 import time
+import json
 import random
 import pickle
 import webbrowser
@@ -95,6 +96,7 @@ isClosing = False
 plylst = {}
 trackLength = '00:00:00'
 loops = 0
+showingAll = True
 
 # open a file location
 def openLocation(directory: str) -> None:
@@ -288,6 +290,7 @@ def tryLoad(file: os.PathLike | BytesIO, n: str | None = None) -> bool:
             name.config(text = os.path.splitext(os.path.split(played)[1])[0] if len(os.path.splitext(os.path.split(played)[1])[0]) <= 26 else os.path.splitext(os.path.split(played)[1])[0][0:25] + '…')
         else: name.config(text = os.path.splitext(n)[0] if len(os.path.splitext(n)[0]) <= 26 else os.path.splitext(n)[0][0:25] + '…')
         if not playingQueue[0]:
+            addRecent(str(file))
             music.play(0)
             if root.state() != 'withdrawn':
                 root.withdraw()
@@ -1457,6 +1460,30 @@ def onClose() -> None:
         data.index = 0
     root.destroy()
 
+# add the file to recent
+def addRecent(path: str) -> None:
+    if path in recent:
+        recent.remove(path)
+    recent.append(path)
+    if len(recent) > 10:
+        recent.remove(recent[0])
+    with open(os.path.join(str(dataFolder), 'WeaveSound', 'recent.txt'), 'w') as file:
+        file.write('\n'.join(recent))
+
+# a function to switch the selection combobox between showing recent and showing all files
+def switchBox() -> None:
+    global showingAll
+    if showingAll:
+        box['values'] = list(reversed(recent)) if len(recent) > 0 else tuple(' ')
+        showingAll = False
+        toggle.config(text = 'Show all')
+        box.current(0)
+    else:
+        box['values'] = sorted(tuple(shortened)) if len(files) > 0 else tuple(' ')
+        showingAll = True
+        toggle.config(text = 'Show recent')
+        box.current(data.index)
+
 # an object representing the queue
 class Queue:
     def __init__(self, queue: list):
@@ -1885,14 +1912,14 @@ class Hyperlink(tk.Label):
         if 'changeColor' in kwargs:
             self.changeColor = kwargs['changeColor']
 
-os.makedirs(os.path.join(str(dataFolder), 'WeaveSound', 'queues'), exist_ok = True)# make the data folders if they don't exist
+os.makedirs(os.path.join(str(dataFolder), 'WeaveSound', 'queues'), exist_ok = True)# create the data folders if they don't exist
 
 # check to make sure lang file is valid
 lang = lang_.check()
 if not lang:
     exit()
 
-# load the data file and language file
+# load the data file
 try:
     with open(os.path.join(str(dataFolder), 'WeaveSound', 'data.pickle'), 'rb') as file:
         data = pickle.load(file)
@@ -1907,6 +1934,21 @@ except (pickle.PickleError, TypeError, EOFError, AttributeError, MemoryError) as
     data = SaveData([str(musicDir)], -1, 'Up', 'Down', 'k', 'm', Queue([]), 1, 1, 1, 1, str(musicDir), 0, 1, 0, 0, 1, 0, 0)
     print('Recreated corrupted data file')
     data.save()
+
+# try to load the recent files file
+try:
+    with open(os.path.join(str(dataFolder), 'WeaveSound', 'recent.txt'), 'r') as file:
+        recent = [line.strip() for line in file.readlines()]
+except:
+    recent = []
+else:
+    seen = set()
+    result = []
+    for item in recent:
+        if item not in seen:
+            result.append(item)
+            seen.add(item)
+    recent = result
 
 # fix older data files
 if not hasattr(data, 'loopAll'):
@@ -2051,6 +2093,8 @@ Hovertip(saveQueueAs, lang['tooltip']['queue_save_as'])
 load = ttk.Button(root, text = lang['button']['queue_load'], cursor = 'hand2', command = loadQueue, width = 14)
 load.place(x = 2, y = 142 + spacing * 2.5)
 Hovertip(load, lang['tooltip']['queue_load'])
+toggle = ttk.Button(text = 'Show recent', command = switchBox, cursor = 'hand2')
+toggle.pack()
 playlistBtn = ttk.Button(root, text = lang['button']['playlist'], command = playlist, cursor = 'hand2')
 playlistBtn.pack()
 Hovertip(playlistBtn, lang['tooltip']['playlist'])

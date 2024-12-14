@@ -1170,8 +1170,6 @@ def findNext(searchKey: str):
                 found = True
                 print('Search succesful')
                 break
-            else:
-                print(f'No instance of {searchKey} found. Searching again from top')
         if not found:
             for i in range(len(items)):
                 if searchKey.lower() in items[i].lower():
@@ -1196,8 +1194,6 @@ def findPrev(searchKey: str):
                 found = True
                 print('Search succesful')
                 break
-        else:
-            print(f'No instance of {searchKey} found. Searching again from bottom')
         if not found:
             for i in range(len(items) - 1, -1, -1):
                 if searchKey.lower() in items[i].lower():

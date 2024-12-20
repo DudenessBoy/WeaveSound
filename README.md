@@ -7,7 +7,6 @@ WeaveSound is a lightweight, offline music player that allows users to listen to
 - Add songs to a queue and play them in order
 - Shuffle, reorder, duplicate, and remove items in the queue
 - Save and load queues from files
-- Lightweight design with optional cloud integrations (Google Drive and OneDrive)
 
 ## Requirements
 1. **FFmpeg** (required for best functionality, especially for audio encoding/decoding)

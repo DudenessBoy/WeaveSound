@@ -70,7 +70,7 @@ WeaveSound has been tested on Linux and Windows. It has not been tested on macOS
 Run the executable for a hassle-free experience.
 If running from source, use the following command:
 ```bash
-python WeaveSound.py
+python WeaveSound.pyw
 ```
 ## License
 WeaveSound is released under the GPL License. See the [LICENSE.txt](https://github.com/DudenessBoy/WeaveSound/blob/main/LICENSE.txt) file for more details.

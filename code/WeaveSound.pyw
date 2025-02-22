@@ -985,7 +985,7 @@ def license() -> None:
     # Create a new window for the license
     licenseWin = tk.Toplevel(root, takefocus=True)
     licenseWin.config(bg='white' if data.theme else '#1e1e2e')
-    licenseWin.title(f'{lang["title"]["eula"]} - {lang["title"]["main"]}')
+    licenseWin.title(f'{lang["title"]["license"]} - {lang["title"]["main"]}')
     licenseWin.focus()
     licenseWin.geometry(f'805x550+{root.winfo_x()}+{root.winfo_y()}')
 

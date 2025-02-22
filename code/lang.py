@@ -201,7 +201,7 @@ lang = {
         "filters": "Filters",
         "settings": "Settings",
         "control": "Control",
-        "eula": "License",
+        "license": "License",
         "credits": "Credits",
         "save_as": "Save As",
         "open_queue": "Open Queue File",

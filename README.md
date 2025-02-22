@@ -1,6 +1,6 @@
 # WeaveSound
 
-WeaveSound is a lightweight, offline music player that allows users to listen to their downloaded tracks. It offers a queue feature to play songs in order, shuffle the queue, remove or reorder items, and save/load the queue to/from a file. For best functionality, FFmpeg is required, but it is not needed for the basic operation of the app.
+WeaveSound is a lightweight, offline music player that allows users to listen to their downloaded tracks. It offers a queue feature to play songs in order, shuffle the queue, remove or reorder items, and save/load the queue to/from a file. For best functionality, FFmpeg is required, but it is not needed for the basic operation of the app. This is mostly a hobby project, and isn't meant to be extremely good compared to, say, VLC, but feel free to try out and tweak this project.
 
 ## Features
 - Play downloaded tracks offline
